@@ -15,7 +15,7 @@ class County(BaseModel):
 
 
 class SearchInput(BaseModel):
-    name: str | None = None
+    county: str | None = None
     state: str | None = None
 
 
@@ -113,13 +113,13 @@ def get_all_counties() -> List[County]:
 
 @app.get("/api/v2/search")
 def county_search(input: SearchInput):
-    if not input.state and not input.name:
+    if not input.state and not input.county:
         raise HTTPException(
             status_code=400, detail="Invalid request: missing search parameters"
         )
-    elif input.state and not input.name:
+    elif input.state and not input.county:
         return get_counties_by_state(input.state)
-    elif input.name and not input.state:
-        return get_counties_by_name(input.name)
-    elif input.state and input.name:
-        return get_county_by_state_and_name(input.state, input.name)
+    elif input.county and not input.state:
+        return get_counties_by_name(input.county)
+    elif input.state and input.county:
+        return get_county_by_state_and_name(input.state, input.county)
