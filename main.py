@@ -112,14 +112,14 @@ def get_all_counties() -> List[County]:
 
 
 @app.get("/api/v2/search")
-def county_search(input: SearchInput):
-    if not input.state and not input.county:
+def county_search(state: str | None, county: str | None):
+    if not state and not county:
         raise HTTPException(
             status_code=400, detail="Invalid request: missing search parameters"
         )
-    elif input.state and not input.county:
-        return get_counties_by_state(input.state)
-    elif input.county and not input.state:
-        return get_counties_by_name(input.county)
-    elif input.state and input.county:
-        return get_county_by_state_and_name(input.state, input.county)
+    elif state and not county:
+        return get_counties_by_state(state)
+    elif county and not state:
+        return get_counties_by_name(county)
+    elif state and county:
+        return get_county_by_state_and_name(state, county)
